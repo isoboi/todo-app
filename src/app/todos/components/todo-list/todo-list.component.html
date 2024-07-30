@@ -1,0 +1,20 @@
+<div class="todo-container">
+  @if(isListRoute) {
+    <app-todo-list-item [title]="'Today TODO\'s'"
+                        [todos]="todayTodos"
+                        [displayedColumns]="displayedColumns"
+                        (removeTodo)="remove($event)"
+                        [isToday]="true"
+                        (toggleFavoriteTodo)="toggleFavorite($event)"
+    >
+    </app-todo-list-item>
+  }
+
+
+  <app-todo-list-item [title]="isListRoute ? 'My Todo List' : 'Favorite TODO\'s'"
+                      [todos]="otherTodos"
+                      [displayedColumns]="displayedColumns"
+                      (removeTodo)="remove($event)"
+                      (toggleFavoriteTodo)="toggleFavorite($event)">
+  </app-todo-list-item>
+</div>

@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="header">
+    <h1>Add TODO</h1>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Title</mat-label>
+      <textarea matInput placeholder="Enter TODO title" formControlName="title" cdkTextareaAutosize></textarea>
+      @if(title?.hasError('required') && (title?.dirty || title?.touched)) {
+        <mat-error>
+          Title is required
+        </mat-error>
+      }
+      @if (title?.hasError('maxlength') && (title?.dirty || title?.touched)) {
+        <mat-error>
+          Max length is 100 characters
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Expiration Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="expirationDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if(expirationDate?.hasError('required') && (expirationDate?.dirty || expirationDate?.touched)) {
+        <mat-error>
+          Expiration date is required
+        </mat-error>
+      }
+
+      @if(expirationDate?.hasError('matDatepickerMin') && (expirationDate?.dirty || expirationDate?.touched)) {
+        <mat-error>
+          Expiration date cannot be in the past
+        </mat-error>
+      }
+
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Expiration Time</mat-label>
+      <input matInput [ngxTimepicker]="expirationTimePicker" readonly formControlName="expirationTime">
+      <ngx-material-timepicker #expirationTimePicker></ngx-material-timepicker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid">Create</button>
+  </form>
+</div>

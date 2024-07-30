@@ -1,0 +1,67 @@
+<mat-card>
+  <mat-toolbar>{{ title }}</mat-toolbar>
+
+  @if(todos.length) {
+    <table mat-table
+           [dataSource]="todos"
+           matSort
+           class="mat-elevation-z8">
+
+      <!-- title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title">
+
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox></mat-checkbox>
+          {{ element.title }}
+        </td>
+      </ng-container>
+
+
+      <!-- createdAt Column -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef class="created-at" mat-sort-header sortActionDescription="Sort by createdAt">
+          Create at
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.createdAt | date: 'mediumDate' }}</td>
+      </ng-container>
+
+      <!-- timeLeft Column -->
+      <ng-container matColumnDef="timeLeft">
+        <th mat-header-cell *matHeaderCellDef class="time-left" mat-sort-header sortActionDescription="Sort by timeLeft">
+          {{ isToday ? 'Time left' : 'Expiration' }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          @if (isToday) {
+            <app-count-down [targetDate]="element.expirationDate"></app-count-down>
+          } @else {
+            {{ element.expirationDate | date: 'mediumDate' }}
+          }
+        </td>
+      </ng-container>
+
+      <!-- createdAt Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by createdAt">
+        </th>
+        <td mat-cell *matCellDef="let element" class="actions">
+          <button mat-icon-button (click)="toggleFavorite(element)">
+            <mat-icon>{{ element.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="remove(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  } @else {
+    <div class="no-data">
+      No data available.
+    </div>
+  }
+
+</mat-card>
